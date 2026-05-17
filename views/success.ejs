@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panel Berhasil Dibuat! - Order Panel Store</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body class="bg-gradient-to-br from-black via-emerald-900/20 to-green-900/20 min-h-screen overflow-hidden">
+  
+  <!-- Animated Background -->
+  <div class="fixed inset-0 overflow-hidden pointer-events-none">
+    <div class="absolute -top-40 -right-40 w-80 h-80 bg-emerald-500/20 rounded-full blur-3xl animate-float-slow"></div>
+    <div class="absolute -bottom-40 -left-40 w-96 h-96 bg-green-500/20 rounded-full blur-3xl animate-float"></div>
+    <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-emerald-500/10 rounded-full blur-3xl animate-pulse-slow"></div>
+  </div>
+
+  <!-- Confetti Canvas -->
+  <canvas id="confetti-canvas" class="fixed inset-0 z-10 pointer-events-none"></canvas>
+
+  <!-- Navbar -->
+  <nav class="fixed top-0 left-0 right-0 z-50 backdrop-blur-xl bg-black/30 border-b border-emerald-500/30">
+    <div class="max-w-2xl mx-auto px-6 py-4">
+      <div class="flex items-center justify-between">
+        <a href="/" class="flex items-center space-x-3 hover:scale-105 transition-transform">
+          <div class="w-10 h-10 bg-gradient-to-r from-emerald-500 to-green-500 rounded-xl flex items-center justify-center">
+            <i class="ri-home-2-line text-white"></i>
+          </div>
+        </a>
+        <div class="text-center">
+          <h1 class="text-xl font-bold bg-gradient-to-r from-emerald-400 via-green-400 to-teal-400 bg-clip-text text-transparent font-[Orbitron]">
+            SERVER AKTIF
+          </h1>
+          <p class="text-xs text-green-400 font-[Exo2]">Panel siap digunakan</p>
+        </div>
+        <div class="w-10 h-10"></div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Success Content -->
+  <div class="pt-28 pb-12 px-6 max-w-2xl mx-auto">
+    
+    <!-- Checkmark Animation -->
+    <div class="text-center mb-12">
+      <div class="checkmark-container w-48 h-48 bg-gradient-to-r from-emerald-500 to-green-500 rounded-3xl flex items-center justify-center mx-auto mb-8 shadow-2xl shadow-emerald-500/50 animate-bounce-slow relative overflow-hidden">
+        <div class="checkmark absolute inset-0 flex items-center justify-center">
+          <svg class="w-32 h-32 text-white" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="50" cy="50" r="45" stroke="currentColor" stroke-width="8" stroke-linecap="round" fill="none" opacity="0" class="animate-draw-circle"/>
+            <path d="M25 50 L42 67 L75 32" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" fill="none" opacity="0" class="animate-draw-check"/>
+          </svg>
+        </div>
+        <i class="ri-check-double-line text-6xl text-white animate-pulse"></i>
+      </div>
+      <h1 class="text-5xl md:text-6xl font-black bg-gradient-to-r from-emerald-400 via-green-400 to-teal-400 bg-clip-text text-transparent mb-4 font-[Orbitron]">
+        BERHASIL!
+      </h1>
+      <p class="text-xl text-green-200/90 font-[Exo2] mb-2">Panel Pterodactyl Anda sudah aktif</p>
+      <p class="text-green-300 font-bold text-lg font-[Exo2]"><%= order.ram %> - <%= order.username %></p>
+    </div>
+
+    <!-- Account Card -->
+    <div class="success-card relative bg-white/10 backdrop-blur-xl border-2 border-emerald-500/40 rounded-3xl p-8 md:p-12 hover:border-emerald-400/70 hover:bg-white/20 transition-all duration-700 hover:-translate-y-3 shadow-2xl shadow-emerald-500/30 group">
+      
+      <!-- Glow Effect -->
+      <div class="absolute inset-0 bg-gradient-to-r from-emerald-500/20 to-green-500/20 rounded-3xl blur-xl -z-10 opacity-0 group-hover:opacity-100 transition-all duration-700"></div>
+      
+      <div class="grid md:grid-cols-2 gap-6">
+        
+        <!-- Login Info -->
+        <div class="space-y-4">
+          <div class="flex items-center space-x-3">
+            <div class="w-12 h-12 bg-gradient-to-r from-emerald-500 to-green-500 rounded-xl flex items-center justify-center flex-shrink-0">
+              <i class="ri-server-line text-xl text-white"></i>
+            </div>
+            <div>
+              <h3 class="text-xl font-bold text-white font-[Orbitron]">Panel Login</h3>
+              <p class="text-green-300 text-sm font-[Exo2]">Masuk ke panel Anda</p>
+            </div>
+          </div>
+          
+          <div class="space-y-3">
+            <div class="info-item">
+              <label class="text-sm text-cyan-200 font-[Exo2] block mb-1">Domain Panel</label>
+              <div class="flex items-center space-x-3 p-3 bg-black/50 border border-emerald-500/30 rounded-xl">
+                <input id="domain" value="<%= order.panel.domain %>" readonly class="flex-1 bg-transparent text-white font-bold font-mono text-lg outline-none">
+                <button onclick="copyToClipboard('domain')" class="p-2 hover:bg-emerald-500/20 hover:scale-110 transition-all duration-300 rounded-xl">
+                  <i class="ri-file-copy-line text-emerald-400 hover:text-emerald-300"></i>
+                </button>
+              </div>
+            </div>
+            
+            <div class="info-item">
+              <label class="text-sm text-cyan-200 font-[Exo2] block mb-1">Username & Password</label>
+              <div class="flex items-center space-x-3 p-3 bg-black/50 border border-emerald-500/30 rounded-xl">
+                <input id="credentials" value="<%= order.panel.password %>" readonly class="flex-1 bg-transparent text-white font-bold font-mono text-lg outline-none">
+                <button onclick="copyToClipboard('credentials')" class="p-2 hover:bg-emerald-500/20 hover:scale-110 transition-all duration-300 rounded-xl">
+                  <i class="ri-file-copy-line text-emerald-400 hover:text-emerald-300"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="space-y-4 pt-2 md:pt-0">
+          <div class="flex items-center space-x-3 p-4 bg-gradient-to-br from-emerald-500/10 to-green-500/10 border border-emerald-400/30 rounded-2xl">
+            <div class="w-12 h-12 bg-gradient-to-r from-emerald-500 to-green-500 rounded-xl flex items-center justify-center flex-shrink-0">
+              <i class="ri-play-circle-line text-xl text-white animate-pulse"></i>
+            </div>
+            <div>
+              <h4 class="font-bold text-white text-lg font-[Orbitron]">Server Siap</h4>
+              <p class="text-emerald-200 font-[Exo2]"><%= order.ram %> RAM • 100% CPU</p>
+            </div>
+          </div>
+          
+          <div class="grid grid-cols-2 gap-3 pt-2">
+            <a href="<%= order.panel.domain %>" target="_blank" class="block p-4 bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-500 hover:to-green-500 text-white font-bold rounded-xl text-center shadow-xl hover:shadow-emerald-500/50 hover:scale-105 transition-all duration-300 font-[Exo2] uppercase tracking-wide">
+              Buka Panel
+            </a>
+            <button onclick="copyAll()" class="p-4 bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 text-white font-bold rounded-xl shadow-xl hover:shadow-blue-500/50 hover:scale-105 transition-all duration-300 font-[Exo2] uppercase tracking-wide">
+              Copy Semua
+            </button>
+          </div>
+        </div>
+        
+      </div>
+    </div>
+
+    <!-- Order Summary -->
+    <div class="mt-12 text-center">
+      <p class="text-green-300 font-[Exo2] text-lg mb-6">Terima kasih telah menggunakan layanan kami! 🚀</p>
+      <div class="inline-flex items-center space-x-3 px-8 py-4 bg-emerald-500/20 backdrop-blur-xl border border-emerald-400/50 rounded-2xl text-emerald-300 font-bold font-[Exo2] hover:bg-emerald-500/30 transition-all duration-300">
+        <i class="ri-customer-service-2-line"></i>
+        <span>Support 24/7 • Order ID: <%= order.id.slice(0,8) %></span>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Confetti explosion
+    setTimeout(() => {
+      confetti({
+        particleCount: 100,
+        spread: 70,
+        origin: { y: 0.6 },
+        colors: ['#10b981', '#059669', '#047857']
+      });
+    }, 500);
+
+    // Checkmark animation
+    setTimeout(() => {
+      document.querySelector('.animate-draw-circle').style.opacity = '1';
+      document.querySelector('.animate-draw-circle').style.strokeDasharray = '283';
+      document.querySelector('.animate-draw-check').style.opacity = '1';
+    }, 1000);
+
+    function copyToClipboard(id) {
+      const text = document.getElementById(id);
+      navigator.clipboard.writeText(text.value).then(() => {
+        const btn = text.nextElementSibling.querySelector('i');
+        const originalIcon = btn.className;
+        btn.className = 'ri-check-line text-green-400';
+        setTimeout(() => btn.className = originalIcon, 2000);
+      });
+    }
+
+    function copyAll() {
+      const domain = document.getElementById('domain').value;
+      const credentials = document.getElementById('credentials').value;
+      navigator.clipboard.writeText(`Domain: ${domain}\nLogin: ${credentials}`).then(() => {
+        showToast('Semua info disalin!', 'green');
+      });
+    }
+
+    function showToast(message, color) {
+      // Simple toast effect
+      const toast = document.createElement('div');
+      toast.className = `fixed top-24 right-6 z-[100] p-4 bg-gradient-to-r from-${color}-500/95 to-${color}-600/95 backdrop-blur-xl border border-${color}-400/50 rounded-xl shadow-2xl shadow-${color}-500/25 text-white font-bold font-[Exo2] animate-slide-in-right`;
+      toast.textContent = message;
+      document.body.appendChild(toast);
+      setTimeout(() => toast.remove(), 3000);
+    }
+  </script>
+
+  <style>
+    @keyframes draw-circle {
+      to { stroke-dashoffset: 0; }
+    }
+    @keyframes draw-check {
+      to { stroke-dashoffset: 0; }
+    }
+    .animate-draw-circle {
+      stroke-dasharray: 283;
+      stroke-dashoffset: 283;
+      animation: draw-circle 1s ease-out forwards;
+    }
+    .animate-draw-check {
+      stroke-dasharray: 200;
+      stroke-dashoffset: 200;
+      animation: draw-check 0.8s ease-out 0.6s forwards;
+    }
+  </style>
+</body>
+</html>

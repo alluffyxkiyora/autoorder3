@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ORDER PANEL STORE - Futuristic Panel</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body class="bg-gradient-to-br from-black via-blue-900/20 to-purple-900/20 min-h-screen overflow-hidden">
+  
+  <!-- Animated Background -->
+  <div class="fixed inset-0 overflow-hidden pointer-events-none">
+    <div class="absolute -top-40 -right-40 w-80 h-80 bg-blue-500/20 rounded-full blur-3xl animate-float-slow"></div>
+    <div class="absolute -bottom-40 -left-40 w-96 h-96 bg-purple-500/20 rounded-full blur-3xl animate-float"></div>
+    <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-cyan-500/10 rounded-full blur-3xl animate-pulse-slow"></div>
+  </div>
+
+  <!-- Navbar -->
+  <nav class="fixed top-0 left-0 right-0 z-50 backdrop-blur-xl bg-black/30 border-b border-blue-500/30">
+    <div class="max-w-7xl mx-auto px-6 py-4">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center space-x-3">
+          <div class="w-10 h-10 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center animate-pulse">
+            <i class="ri-server-line text-white text-xl"></i>
+          </div>
+          <div>
+            <h1 class="text-2xl font-bold bg-gradient-to-r from-blue-400 via-cyan-400 to-purple-400 bg-clip-text text-transparent font-[Orbitron]">
+              ORDER PANEL
+            </h1>
+            <p class="text-xs text-green-400 font-[Exo2] tracking-wider">ONLINE <i class="ri-signal-tower-line animate-pulse"></i></p>
+          </div>
+        </div>
+        <div class="flex items-center space-x-2">
+          <div class="w-3 h-3 bg-green-400 rounded-full animate-ping"></div>
+          <span class="text-xs text-green-400 font-[Exo2]">LIVE</span>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <div class="pt-24 pb-12 px-6 max-w-7xl mx-auto">
+    
+    <% if (error) { %>
+      <div class="mb-8 p-6 bg-red-500/20 backdrop-blur-xl border border-red-500/50 rounded-2xl animate-fade-in">
+        <div class="flex items-center space-x-3">
+          <i class="ri-error-warning-line text-2xl text-red-400"></i>
+          <span class="text-red-300 font-medium"><%= error %></span>
+        </div>
+      </div>
+    <% } %>
+
+    <!-- Hero Section -->
+    <div class="text-center mb-20 animate-fade-in-up">
+      <h2 class="text-6xl md:text-7xl font-black bg-gradient-to-r from-blue-400 via-cyan-400 to-purple-400 bg-clip-text text-transparent mb-6 font-[Orbitron]">
+        ORDER YOUR SERVER
+      </h2>
+      <p class="text-xl text-cyan-200/80 font-[Exo2] max-w-2xl mx-auto mb-12">
+        Panel Pterodactyl Premium dengan pembayaran QRIS otomatis. 
+        <span class="text-blue-400 font-semibold">Instant deploy!</span>
+      </p>
+      
+      <!-- Username Input -->
+      <div class="max-w-md mx-auto">
+        <div class="relative group">
+          <input 
+            type="text" 
+            id="username" 
+            class="w-full px-6 py-5 bg-white/10 backdrop-blur-xl border-2 border-blue-500/30 rounded-2xl text-white placeholder-blue-300 font-[Exo2] text-lg focus:outline-none focus:border-blue-400/70 transition-all duration-500 hover:bg-white/20 group-hover:border-blue-400/80"
+            placeholder="Username Panel (min 3 karakter)"
+            maxlength="20"
+          >
+          <i class="ri-user-line absolute right-5 top-1/2 -translate-y-1/2 text-blue-400 text-xl group-focus:text-blue-300 transition-colors"></i>
+        </div>
+      </div>
+    </div>
+
+    <!-- Packages Grid -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-7xl mx-auto">
+      
+      <% 
+        const packages = [
+          {name: '1GB', price: 1000},
+          {name: '2GB', price: 2000},
+          {name: '3GB', price: 3000},
+          {name: '4GB', price: 4000},
+          {name: '5GB', price: 5000},
+          {name: '6GB', price: 6000},
+          {name: '7GB', price: 7000},
+          {name: '8GB', price: 8000},
+          {name: '9GB', price: 9000},
+          {name: '10GB', price: 10000},
+          {name: '11GB', price: 11000},
+          {name: 'UNLI', price: 12000}
+        ];
+      %>
+
+      <% packages.forEach((pkg, index) => { %>
+        <div class="package-card group relative bg-white/10 backdrop-blur-xl border-2 border-blue-500/20 rounded-3xl p-8 hover:border-blue-400/60 hover:bg-white/20 transition-all duration-500 hover:-translate-y-3 hover:rotate-1 animate-fade-in-up" style="animation-delay: <%= index * 50 %>ms">
+          
+          <!-- Glow Effect -->
+          <div class="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-cyan-500/20 rounded-3xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+          
+          <!-- RAM Icon -->
+          <div class="w-20 h-20 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-500 shadow-2xl">
+            <i class="ri-cpu-line text-3xl text-white"></i>
+          </div>
+          
+          <!-- Package Name -->
+          <h3 class="text-2xl font-bold text-white text-center mb-2 font-[Orbitron] tracking-wide"><%= pkg.name %></h3>
+          
+          <!-- Price -->
+          <div class="text-4xl md:text-5xl font-black bg-gradient-to-r from-green-400 to-emerald-400 bg-clip-text text-transparent text-center mb-8">
+            Rp <%= pkg.price.toLocaleString() %>
+          </div>
+          
+          <!-- Buy Button -->
+          <button 
+            class="buy-btn w-full py-5 px-6 bg-gradient-to-r from-blue-600 via-blue-500 to-cyan-500 hover:from-blue-500 hover:via-cyan-400 hover:to-blue-600 text-white font-bold rounded-2xl shadow-2xl hover:shadow-neon-blue hover:scale-105 hover:-translate-y-1 transform transition-all duration-300 font-[Exo2] uppercase tracking-wider text-lg relative overflow-hidden"
+            data-ram="<%= pkg.name %>"
+          >
+            <span class="relative z-10 flex items-center justify-center space-x-2">
+              <i class="ri-shopping-cart-2-fill"></i>
+              <span>Beli Sekarang</span>
+            </span>
+            <div class="absolute inset-0 bg-white/20 scale-0 group-hover:scale-100 transition-transform duration-300 origin-center rounded-full"></div>
+          </button>
+        </div>
+      <% }) %>
+      
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="toast" class="fixed bottom-6 right-6 z-50 hidden p-6 bg-gradient-to-r from-red-500/90 to-pink-500/90 backdrop-blur-xl border border-red-400/50 rounded-2xl shadow-2xl shadow-red-500/25 max-w-sm mx-auto">
+    <div class="flex items-center space-x-3">
+      <i class="ri-error-warning-line text-xl text-white"></i>
+      <span id="toast-message" class="text-white font-medium font-[Exo2]"></span>
+    </div>
+  </div>
+
+  <!-- Loading Overlay -->
+  <div id="loading" class="fixed inset-0 bg-black/80 backdrop-blur-md z-[9999] hidden flex items-center justify-center">
+    <div class="text-center">
+      <div class="w-24 h-24 border-4 border-blue-500/30 border-t-blue-500 rounded-full animate-spin mx-auto mb-6"></div>
+      <p class="text-xl text-white font-[Exo2]">Processing...</p>
+    </div>
+  </div>
+
+  <script src="/script.js"></script>
+</body>
+</html>

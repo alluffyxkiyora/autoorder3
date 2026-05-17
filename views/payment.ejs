@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pembayaran QRIS - Order Panel Store</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body class="bg-gradient-to-br from-black via-blue-900/20 to-purple-900/20 min-h-screen overflow-hidden">
+  
+  <!-- Animated Background -->
+  <div class="fixed inset-0 overflow-hidden pointer-events-none">
+    <div class="absolute -top-40 -right-40 w-80 h-80 bg-blue-500/20 rounded-full blur-3xl animate-float-slow"></div>
+    <div class="absolute -bottom-40 -left-40 w-96 h-96 bg-purple-500/20 rounded-full blur-3xl animate-float"></div>
+    <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-cyan-500/10 rounded-full blur-3xl animate-pulse-slow"></div>
+  </div>
+
+  <!-- Navbar -->
+  <nav class="fixed top-0 left-0 right-0 z-50 backdrop-blur-xl bg-black/30 border-b border-blue-500/30">
+    <div class="max-w-2xl mx-auto px-6 py-4">
+      <div class="flex items-center justify-between">
+        <a href="/" class="flex items-center space-x-3 hover:scale-105 transition-transform">
+          <div class="w-10 h-10 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center">
+            <i class="ri-arrow-go-back-line text-white"></i>
+          </div>
+        </a>
+        <div class="text-center">
+          <h1 class="text-xl font-bold bg-gradient-to-r from-blue-400 via-cyan-400 to-purple-400 bg-clip-text text-transparent font-[Orbitron]">
+            PEMBAYARAN QRIS
+          </h1>
+          <p class="text-xs text-cyan-400 font-[Exo2]">Rp <%= order.amount.toLocaleString() %></p>
+        </div>
+        <div class="w-10 h-10"></div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Payment Container -->
+  <div class="pt-24 pb-12 px-6 max-w-2xl mx-auto">
+    
+    <!-- Payment Status -->
+    <div id="status-container" class="text-center mb-12">
+      <div id="status-icon" class="w-24 h-24 bg-gradient-to-r from-yellow-500 to-orange-500 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-2xl shadow-yellow-500/25 animate-pulse">
+        <i class="ri-time-line text-4xl text-white"></i>
+      </div>
+      <h2 id="status-title" class="text-3xl font-bold text-white mb-2 font-[Orbitron]">Menunggu Pembayaran</h2>
+      <p id="status-desc" class="text-cyan-200/80 text-lg font-[Exo2]">Transfer sesuai nominal yang ditampilkan</p>
+    </div>
+
+    <!-- Payment Card -->
+    <div class="payment-card relative bg-white/10 backdrop-blur-xl border-2 border-blue-500/30 rounded-3xl p-8 md:p-12 hover:border-blue-400/60 hover:bg-white/20 transition-all duration-500 animate-float hover:-translate-y-2 shadow-2xl">
+      
+      <!-- QR Code -->
+      <div class="flex flex-col items-center mb-10">
+        <div class="relative mb-6">
+          <div class="qr-glow absolute inset-0 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-2xl blur-xl animate-pulse opacity-75"></div>
+          <img id="qrcode" src="<%= order.qr %>" alt="QRIS Cashi.id" class="w-64 h-64 md:w-80 md:h-80 rounded-2xl border-4 border-white/20 shadow-2xl relative z-10 animate-scan-line">
+          <div class="scan-line absolute inset-0 bg-gradient-to-t from-green-400/20 via-green-400/50 to-transparent rounded-2xl opacity-0 animate-scan"></div>
+        </div>
+        <p class="text-sm text-blue-300 font-[Exo2] mb-2">Scan QRIS di atas</p>
+        <a href="<%= order.checkout %>" target="_blank" class="inline-flex items-center space-x-2 px-6 py-3 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-500 hover:to-emerald-500 text-white rounded-xl font-bold hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-green-500/25">
+          <i class="ri-external-link-line"></i>
+          <span>Buka Link Checkout</span>
+        </a>
+      </div>
+
+      <!-- Countdown -->
+      <div class="bg-black/50 backdrop-blur-sm border border-blue-500/40 rounded-2xl p-6 mb-8">
+        <div class="flex items-center justify-center space-x-3 mb-3">
+          <i class="ri-time-fill text-2xl text-yellow-400"></i>
+          <span class="text-lg font-bold text-white font-[Exo2]">Waktu Tersisa</span>
+        </div>
+        <div id="countdown" class="text-4xl md:text-5xl font-black bg-gradient-to-r from-yellow-400 to-orange-400 bg-clip-text text-transparent font-[Orbitron]">
+          05:00
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="flex flex-col sm:flex-row gap-4">
+        <button id="check-status" class="flex-1 py-4 px-6 bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 text-white font-bold rounded-2xl shadow-xl hover:shadow-neon-blue hover:scale-105 transition-all duration-300 font-[Exo2] uppercase flex items-center justify-center space-x-2">
+          <i class="ri-refresh-line animate-spin text-sm"></i>
+          <span>Cek Status</span>
+        </button>
+        <button id="cancel-payment" class="flex-1 py-4 px-6 bg-gradient-to-r from-gray-600 to-gray-500 hover:from-gray-500 hover:to-gray-400 text-white font-bold rounded-2xl shadow-xl hover:shadow-gray-500/50 hover:scale-105 transition-all duration-300 font-[Exo2] uppercase">
+          Batal
+        </button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Toast -->
+  <div id="toast" class="fixed bottom-6 right-6 z-[100] hidden p-6 bg-gradient-to-r from-green-500/95 to-emerald-500/95 backdrop-blur-xl border border-green-400/50 rounded-2xl shadow-2xl shadow-green-500/25 max-w-sm mx-auto">
+    <div class="flex items-center space-x-3">
+      <i class="ri-check-line text-xl text-white"></i>
+      <span id="toast-message" class="text-white font-medium font-[Exo2]"></span>
+    </div>
+  </div>
+
+  <script>
+    const orderId = '<%= order.id %>';
+    let countdownInterval;
+    
+    // Countdown
+    function startCountdown() {
+      const expired = new Date('<%= order.expired %>').getTime();
+      countdownInterval = setInterval(() => {
+        const now = new Date().getTime();
+        const distance = expired - now;
+        
+        if (distance < 0) {
+          clearInterval(countdownInterval);
+          document.getElementById('countdown').textContent = 'EXPIRED';
+          document.getElementById('countdown').className = 'text-4xl md:text-5xl font-black bg-gradient-to-r from-red-400 to-pink-400 bg-clip-text text-transparent font-[Orbitron]';
+          return;
+        }
+        
+        const minutes = Math.floor(distance / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+        document.getElementById('countdown').textContent = 
+          `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+      }, 1000);
+    }
+    
+    // Check Status
+    document.getElementById('check-status').addEventListener('click', async () => {
+      const btn = document.getElementById('check-status');
+      const originalText = btn.innerHTML;
+      
+      btn.innerHTML = '<i class="ri-loader-4-line animate-spin"></i> <span>Memeriksa...</span>';
+      btn.disabled = true;
+      
+      try {
+        const response = await fetch('/check-status', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ orderId })
+        });
+        const data = await response.json();
+        
+        if (data.success && data.status === 'paid') {
+          if (data.completed) {
+            window.location.href = `/success/${orderId}`;
+          } else {
+            showToast('Pembayaran sukses! Membuat panel...', 'green');
+          }
+        } else if (data.status === 'expired') {
+          showToast('QRIS sudah expired', 'red');
+        } else {
+          showToast('Menunggu pembayaran...', 'yellow');
+        }
+      } catch (error) {
+        showToast('Gagal cek status', 'red');
+      }
+      
+      btn.innerHTML = originalText;
+      btn.disabled = false;
+    });
+    
+    // Auto polling
+    setInterval(async () => {
+      const response = await fetch('/check-status', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ orderId })
+      });
+      const data = await response.json();
+      
+      if (data.success && data.status === 'paid' && data.completed) {
+        window.location.href = `/success/${orderId}`;
+      }
+    }, 5000);
+    
+    function showToast(message, color = 'green') {
+      const toast = document.getElementById('toast');
+      document.getElementById('toast-message').textContent = message;
+      toast.className = `fixed bottom-6 right-6 z-[100] p-6 bg-gradient-to-r from-${color}-500/95 to-${color}-600/95 backdrop-blur-xl border border-${color}-400/50 rounded-2xl shadow-2xl shadow-${color}-500/25 max-w-sm mx-auto`;
+      toast.classList.remove('hidden');
+      setTimeout(() => toast.classList.add('hidden'), 4000);
+    }
+    
+    document.getElementById('cancel-payment').addEventListener('click', () => {
+      window.location.href = '/';
+    });
+    
+    startCountdown();
+  </script>
+</body>
+</html>
